@@ -24,11 +24,11 @@ class LocationRequest(BaseModel):
     lat: float
     lon: float
 
-@app.post("/weather_info")
-async def get_weather_info(location: LocationRequest):
+@app.post("/get_field_conditions")
+async def get_field_conditions(location: LocationRequest):
 
     """
-    Get weather condition based on latitude and longitude.
+    Get field conditions based on latitude and longitude.
     Body: {"lat": 28.6139, "lon": 77.2090}
     """
     url = "https://api.open-meteo.com/v1/forecast"
@@ -97,25 +97,13 @@ class ChatRequest(BaseModel):
     lon: float
 
 
-async def process_location(lat: float, lon: float):
-    location = LocationRequest(lat=lat, lon=lon)
-    return await get_weather_info(location)
-
-
-async def process_image(image_base64: str):
-    return {"status": "Image processing not implemented"}
-
-
-async def process_message(text_message: str):
-    return {"status": "Message processing not implemented"}
-
 
 async def orchestrate(request: ChatRequest):
     results = {}
 
-    results["weather"]  = await process_location(request.lat, request.lon)
-    results["image"]    = await process_image(request.image_base64)
-    results["message"]  = await process_message(request.text_message)
+    results["field_conditions"]  = await get_field_conditions(LocationRequest(lat=request.lat, lon=request.lon))
+    # results["image"]    = await process_image(request.image_base64)
+    # results["message"]  = await process_message(request.text_message)
 
     return results
 
