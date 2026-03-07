@@ -1,4 +1,4 @@
-# Flask API Boilerplate
+# Fast API Boilerplate
 
 This is a basic FastAPI template.
 
