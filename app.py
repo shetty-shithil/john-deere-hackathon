@@ -1,8 +1,14 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import httpx
+from consortium import router as llm_router
+
+
+
 
 app = FastAPI()
+
+app.include_router(llm_router)
 
 @app.get("/")
 async def read_root():
@@ -115,3 +121,6 @@ async def enter_chat(request: ChatRequest):
         "status": "success",
         "data": result
     }    
+
+
+
